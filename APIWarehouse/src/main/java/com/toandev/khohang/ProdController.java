@@ -6,6 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,6 +29,11 @@ public class ProdController {
 	@PostMapping("/saveProd")
 	public ResponseEntity<String> saveProd(@RequestBody Product product) {
 	    try {
+			//auto generate ID for product ID
+			Date date = Calendar.getInstance().getTime();
+			DateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss");
+			String strDate = dateFormat.format(date);
+			product.setProd_id(strDate);
 	        prodService.saveProduct(product);
 	        return ResponseEntity.ok("Product saved successfully!");
 	    } catch (Exception e) {
